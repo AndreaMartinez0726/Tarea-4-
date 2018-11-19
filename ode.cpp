@@ -35,7 +35,22 @@ int main (){
 		k3vy=a_y((v_x+dt*k2vx/2),(v_y+dt*k2vy/2));
 		k4vx=a_x((v_x+dt*k3vx),(v_y+dt*k3vy));
 		k4vy=a_y((v_x+dt*k3vx),(v_y+dt*k3vy));
+		//ahora calculamos los ks de x y y:
+		k1x=v_x;
+		k1y=v_y;
+		k2x=v_x+dt*k1vx/2;
+		k2y=v_y+dt*k1vy/2;
+		k3x=v_x+dt*k2vx/2;
+		k3y=v_y+dt*k2vy/2;
+		k4x=v_x+dt*k3vx;
+		k4y=v_y+dt*k3vy;
 		
+		
+		
+		
+	}
+	
+	cout<<"la distancia alcanzada es "<<x;
 	
 	
 	
