@@ -94,8 +94,57 @@ int main(){
 		}
 		guardar<<"\n";
 	}
+	//#2) fronteras abiertas:
+	//se imponen las condiciones de frontera:
+	for(int i=0;i<35;i++){
+		T[i]=0;
+	}
+	//las paredes del cilindro:
+	for(int i=34;i<38;i++){
+		T[i]=100;
+	}
+	ofstream guardar2("2).txt");
 	
-	
+	for (int time_step=0;time_step<100000;time_step++){
+		//nodos internos:
+		for(int j=0;j<4;j++){
+			for (int i=7;i<11;i++){
+				T0=T[i+6*j];T1=T[i+6*j+1];T2=T[i+6*j-1];T3=T[i+6*j+6];T4=T[i+6*j-6];
+				Tsig[i+6*j]=T_sig(T0,T1,T2,T3,T4,c);
+			}
+			
+		}
+		//nodos de las fronteras simetricas:
+		//simetria derecha
+		for (int i=11;i<24;i=i+6){
+			T0=T[i];T1=T[i-1];T2=T[i-1];T3=T[i+6];T4=T[i-6];
+			Tsig[i]=T_sig(T0,T1,T2,T3,T4,c);
+		}
+		for (int i=31;i<35;i=i+1){
+			T0=T[i];T1=T[i+1];T2=T[i-1];T3=T[i-6];T4=T[i-6];
+			Tsig[i]=T_sig(T0,T1,T2,T3,T4,c);
+		}
+		//nodos de las fronteras abiertas:
+		for(int i=1;i<6;i++){
+			Tsig[i]=Tsig[i+6];
+			Tsig[6*i]=Tsig[6*i+1];
+		}
+		Tsig[0]=Tsig[1];
+		//actualizar el vector T con los datos de T_sig:
+		
+		for(int i=0;i<34;i++){
+			T[i]=Tsig[i];
+			T[i]=Tsig[i];
+		}
+		
+		T[29]=100;
+		
+		//guardar datos de temperaturas nuevas:
+		for(int i=0;i<38;i++){
+			guardar2<<T[i]<<",";
+		}
+		guardar2<<"\n";
+	}
 	
 	
 	return 0;
