@@ -145,6 +145,68 @@ int main(){
 		}
 		guardar2<<"\n";
 	}
+	//#3)  fronteras periodicas:
+	//se imponen las condiciones de frontera:
+	for(int i=0;i<35;i++){
+		T[i]=0;
+	}
+	//las paredes del cilindro:
+	for(int i=34;i<38;i++){
+		T[i]=100;
+	}
+	ofstream guardar3("3).txt");
+	dt=10;
+	c=(dt*k/(densidad*cp))/(dx*dx);
+	for (int time_step=0;time_step<100000;time_step++){
+		//nodos internos:
+		for(int j=0;j<4;j++){
+			for (int i=7;i<11;i++){
+				T0=T[i+6*j];T1=T[i+6*j+1];T2=T[i+6*j-1];T3=T[i+6*j+6];T4=T[i+6*j-6];
+				Tsig[i+6*j]=T_sig(T0,T1,T2,T3,T4,c);
+			}
+			
+		}
+		//nodos de las fronteras simetricas:
+		//simetria derecha
+		for (int i=11;i<24;i=i+6){
+			T0=T[i];T1=T[i-1];T2=T[i-1];T3=T[i+6];T4=T[i-6];
+			Tsig[i]=T_sig(T0,T1,T2,T3,T4,c);
+		}
+		for (int i=31;i<35;i=i+1){
+			T0=T[i];T1=T[i+1];T2=T[i-1];T3=T[i-6];T4=T[i-6];
+			Tsig[i]=T_sig(T0,T1,T2,T3,T4,c);
+		}
+		//nodos de las fronteras periodicas:
+		for(int i=1;i<5;i++){//frontera inferior
+			T0=T[i];T1=T[i+1];T2=T[i-1];T3=T[i+6];T4=T[i+6];
+			Tsig[i]=T_sig(T0,T1,T2,T3,T4,c);
+		}
+		for(int i=1;i<5;i++){//frontera derecha
+			T0=T[6*i];T1=T[6*i+1];T2=T[6*i+1];T3=T[6*i+6];T4=T[6*i-6];
+			Tsig[6*i]=T_sig(T0,T1,T2,T3,T4,c);
+		}
+		T0=T[0];T1=T[1];T2=T[1];T3=T[6];T4=T[6];
+		Tsig[0]=T_sig(T0,T1,T2,T3,T4,c);
+		T0=T[5];T1=T[4];T2=T[4];T3=T[11];T4=T[11];
+		Tsig[5]=T_sig(T0,T1,T2,T3,T4,c);
+		T0=T[30];T1=T[31];T2=T[31];T3=T[24];T4=T[24];
+		Tsig[30]=T_sig(T0,T1,T2,T3,T4,c);
+		//actualizar el vector T con los datos de T_sig:
+		
+		for(int i=0;i<34;i++){
+			T[i]=Tsig[i];
+			T[i]=Tsig[i];
+		}
+		
+		T[29]=100;
+		
+		//guardar datos de temperaturas nuevas:
+		for(int i=0;i<38;i++){
+			guardar3<<T[i]<<",";
+		}
+		guardar3<<"\n";
+	}
+	
 	
 	
 	return 0;
