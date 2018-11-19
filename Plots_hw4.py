@@ -49,7 +49,19 @@ for i in range(3):
         figura.savefig('caso'+str(i+1)+'_t'+str(intervalo*j*dt[i])+'.png')
         figura.clear()
         
-   
+    ##calcular los promedios:
+    T_promedio=numpy.zeros(steps[i])
+    tiempo=numpy.linspace(0,steps[i]*dt[i],steps[i])
+    for k in range(steps[i]):
+        ##calcula el promedio en cada paso de tiempo:
+        T_promedio[k]=sum(T[k,:])/38
+
+    #graficar T_promedio contra el tiempo:
+    plt.plot(tiempo,T_promedio)
+    plt.xlabel('time (s)')
+    plt.ylabel('T_avarage (Grados centigrados)')
+    plt.savefig('T_avarage_caso'+str(i+1)+'.png')
+    plt.hold(False)
 
 
 
