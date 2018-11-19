@@ -56,6 +56,46 @@ int main(){
 	for(int i=34;i<38;i++){
 		T[i]=100;
 	}
+	ofstream guardar("1).txt");
+	for (int time_step=0;time_step<10000;time_step++){
+		//nodos internos:
+		for(int j=0;j<4;j++){
+			for (int i=7;i<11;i++){
+				T0=T[i+6*j];T1=T[i+6*j+1];T2=T[i+6*j-1];T3=T[i+6*j+6];T4=T[i+6*j-6];
+				Tsig[i+6*j]=T_sig(T0,T1,T2,T3,T4,c);
+			}
+			
+		}
+		//nodos de las fronteras simetricas:
+		//simetria derecha
+		for (int i=11;i<24;i=i+6){
+			T0=T[i];T1=T[i-1];T2=T[i-1];T3=T[i+6];T4=T[i-6];
+			Tsig[i]=T_sig(T0,T1,T2,T3,T4,c);
+		}
+		for (int i=31;i<35;i=i+1){
+			T0=T[i];T1=T[i+1];T2=T[i-1];T3=T[i-6];T4=T[i-6];
+			Tsig[i]=T_sig(T0,T1,T2,T3,T4,c);
+		}
+		//actualizar el vector T con los datos de T_sig:
+		
+		for(int i=0;i<34;i++){
+			T[i]=Tsig[i];
+			T[i]=Tsig[i];
+		}
+		for(int i=0;i<6;i++){
+			T[i]=10;
+			T[6*i]=10;
+		}
+		T[29]=100;
+		
+		//guardar datos de temperaturas nuevas:
+		for(int i=0;i<38;i++){
+			guardar<<T[i]<<",";
+		}
+		guardar<<"\n";
+	}
+	
+	
 	
 	
 	return 0;
